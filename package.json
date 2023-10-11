@@ -1,0 +1,17 @@
+{
+  "name": "blog.com-directory-javascript",
+  "version": "1.0.0",
+  "description": "Javascript component of blog.com's registry site",
+  "scripts": {
+    "lint": "eslint --ignore-path .gitignore .",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "author": "Sérgio Carvalho",
+  "license": "Proprietary",
+  "devDependencies": {
+    "@types/node": "^20.5.1",
+    "ts-loader": "^9.4.4",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
+}
