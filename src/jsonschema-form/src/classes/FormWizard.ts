@@ -1,4 +1,4 @@
-import XPathObserver from "/home/sergio/Projects/Sooma/Blog.com/directory/private/js/src/xpath-observer/src/index";
+import XPathObserver from "../../../xpath-observer/src/index"
 
 export default class FormWizard {
     static setup() {
