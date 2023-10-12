@@ -18,6 +18,7 @@ import "./drag-and-drop-helper/src/index";
 import "./mutation-event-attacher/src/index";
 import "./template-node/src/index";
 import "./overlay-dialog/src/index";
+import "./konami-code/src/index";
 
 (function() {
     const event = new Event("sergiosgc.modules_loaded");
