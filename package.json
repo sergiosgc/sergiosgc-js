@@ -1,7 +1,7 @@
 {
-  "name": "blog.com-directory-javascript",
+  "name": "sergiosgc-js",
   "version": "1.0.0",
-  "description": "Javascript component of blog.com's registry site",
+  "description": "Loosely coupled personal javascript library",
   "scripts": {
     "lint": "eslint --ignore-path .gitignore .",
     "lint:fix": "npm run lint -- --fix"
