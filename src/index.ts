@@ -10,6 +10,10 @@ import "./assign-to-element/src/index";
 import "./xpath-observer/src/index";
 import "./query-elements/src/index";
 import "./sprintf/src/index";
+import "./call-on-load/src/index";
+import "./button-collapser/src/index";
+import "./delete-confirm/src/index";
+import "./localization/src/index";
 
 (function() {
     const event = new Event("sergiosgc.modules_loaded");

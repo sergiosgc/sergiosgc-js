@@ -2,8 +2,6 @@ export {}
 declare global {
     interface Sergiosgc { 
     }
-    interface Window {
-        sergiosgc: Sergiosgc;
-    }
+    var sergiosgc: Sergiosgc;
 }
-if (!window.sergiosgc) (window.sergiosgc as any) = {}
+if (!globalThis.sergiosgc) (globalThis.sergiosgc as any) = {}

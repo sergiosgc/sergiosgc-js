@@ -3,7 +3,7 @@ import "../../sergiosgc/src/index";
 
 export default function assignToElement(targetElement: string | Element, mapping: Object) {
     if (targetElement instanceof String || "string" == typeof targetElement) {
-        const targetElements = window.sergiosgc.queryElements(targetElement);
+        const targetElements = globalThis.sergiosgc.queryElements(targetElement);
         targetElements.forEach( element => assignToElement(element, mapping));
         return;
     }
@@ -11,7 +11,7 @@ export default function assignToElement(targetElement: string | Element, mapping
         if (path.substring(0, 6) == "css[]:" || path.substring(0,8) == "xpath[]:") {
             const localPath = path.replace( "[]", "" );
             let referenceElementsByParent: { parent: Element, nodes: Element[] }[] = [];
-            Array.from( window.sergiosgc.queryElements(localPath, targetElement) )
+            Array.from( globalThis.sergiosgc.queryElements(localPath, targetElement) )
              .forEach( (elementToClone) => {
                 for (let i=0; i<referenceElementsByParent.length; i++) {
                     if (referenceElementsByParent[i]['parent'] == elementToClone.parentElement) {
@@ -24,14 +24,14 @@ export default function assignToElement(targetElement: string | Element, mapping
             referenceElementsByParent.forEach( referenceElement => referenceElement.nodes.slice(1).forEach( duplicateElement => duplicateElement.remove() ) );
             if (value.array.length == 0) {
                 Array
-                 .from( window.sergiosgc.queryElements(localPath, targetElement) )
+                 .from( globalThis.sergiosgc.queryElements(localPath, targetElement) )
                  .forEach( referenceElement => {
                     if ("undefined" == typeof (referenceElement as any).sergiosgc) (referenceElement as any).sergiosgc = {};
                     if ("undefined" == typeof (referenceElement as any).sergiosgc['visible-display']) (referenceElement as any).sergiosgc['visible-display'] = window.getComputedStyle(referenceElement).display;
                  });
             } else {
                 Array
-                 .from( window.sergiosgc.queryElements(localPath, targetElement) )
+                 .from( globalThis.sergiosgc.queryElements(localPath, targetElement) )
                  .forEach( referenceElement => {
                     if ("undefined" != typeof (referenceElement as any).sergiosgc && 
                         "undefined" != typeof (referenceElement as any).sergiosgc['visible-display']) referenceElement.style.display = (referenceElement as any).sergiosgc['visible-display'];
@@ -56,7 +56,7 @@ export default function assignToElement(targetElement: string | Element, mapping
                  });
             }
         } else {
-            window.sergiosgc.queryElements(path, targetElement).forEach( element => {
+            globalThis.sergiosgc.queryElements(path, targetElement).forEach( element => {
                 element.innerHTML = value;
             })
         }
@@ -74,4 +74,4 @@ declare global {
         assignToElement: typeof assignToElement,
     }
 }
-window.sergiosgc.assignToElement = assignToElement;
+globalThis.sergiosgc.assignToElement = assignToElement;

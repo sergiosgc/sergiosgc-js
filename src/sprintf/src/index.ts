@@ -155,4 +155,4 @@ declare global {
         sprintf: typeof sprintf, 
     }
 }
-window.sergiosgc.sprintf = sprintf;
+globalThis.sergiosgc.sprintf = sprintf;

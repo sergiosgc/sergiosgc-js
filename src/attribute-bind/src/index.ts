@@ -72,7 +72,7 @@ export default class AttributeBind {
 }
 declare global {
     interface Sergiosgc { 
-        AttributeBind?: typeof AttributeBind, 
+        AttributeBind: typeof AttributeBind, 
     }
 }
-window.sergiosgc.AttributeBind = AttributeBind;
+globalThis.sergiosgc.AttributeBind = AttributeBind;

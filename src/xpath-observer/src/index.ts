@@ -47,4 +47,4 @@ declare global {
         XPathObserver: typeof XPathObserver,
     }
 }
-window.sergiosgc.XPathObserver = XPathObserver;
+globalThis.sergiosgc.XPathObserver = XPathObserver;

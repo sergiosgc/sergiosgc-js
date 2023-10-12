@@ -11,4 +11,4 @@ declare global {
         queryElements: typeof queryElements,
     }
 }
-window.sergiosgc.queryElements = queryElements;
+globalThis.sergiosgc.queryElements = queryElements;
