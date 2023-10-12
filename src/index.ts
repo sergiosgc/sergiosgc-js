@@ -17,6 +17,7 @@ import "./localization/src/index";
 import "./drag-and-drop-helper/src/index";
 import "./mutation-event-attacher/src/index";
 import "./template-node/src/index";
+import "./overlay-dialog/src/index";
 
 (function() {
     const event = new Event("sergiosgc.modules_loaded");
