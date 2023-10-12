@@ -9,6 +9,8 @@ export default function queryElements(path: String, rootNode: Element | null = n
 declare global {
     interface Sergiosgc { 
         queryElements: typeof queryElements,
+        queryElement: (expression: string, referenceNode: Element | null) => HTMLElement | null,
     }
 }
 globalThis.sergiosgc.queryElements = queryElements;
+globalThis.sergiosgc.queryElement = (expression: string, referenceNode: Element | null = null) => queryElements(expression, referenceNode)[0] ?? null;
