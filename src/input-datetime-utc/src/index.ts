@@ -50,9 +50,9 @@ export default class InputDatetimeUtc {
 			.map( input => input as HTMLInputElement );
 		// Firefox does not handle timezones in input.value, so convert values to UTC and set the attribute without TZ
 		targetInputs
-			.filter( input => !Number.isNaN(Date.parse(input.getAttribute("value") ?? "")) )
 			.forEach( input => {
-				const valueAsDate = new Date(Date.parse(input.getAttribute("value") ?? ""));
+				const valueAsDate = InputDatetimeUtc.parseDate(input.getAttribute("value") ?? "");
+				if (valueAsDate == null) return;
 				input.setAttribute("value", InputDatetimeUtc.toLocalIso8601(valueAsDate));
 		});
 		// Setup submit event handlers to convert back to UTC
