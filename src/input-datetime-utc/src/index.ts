@@ -10,6 +10,40 @@ export default class InputDatetimeUtc {
 		if (!InputDatetimeUtc.instance) InputDatetimeUtc.instance = new InputDatetimeUtc();
 		return InputDatetimeUtc.instance;
 	}
+	public static parseDate(input: string): Date | null{
+		const re = /\w{3}, (?<day>\d+) (?<month>Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (?<year>\d+) (?<hour>\d\d):(?<minute>\d\d):(?<second>\d\d)(?:\.\d+)? (?<offset>[-+]?\d+)/;
+		let match;
+		if (match = input.match(re)) {
+			let day = parseInt(match.groups?.day ?? "");
+			let month = 1 + ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].indexOf(match.groups?.month ?? "");
+			let year = parseInt(match.groups?.year ?? "");
+			if (year < 100) year += 2000;
+			let hour = parseInt(match.groups?.hour ?? "");
+			let minute = parseInt(match.groups?.minute ?? "");
+			let second = parseInt(match.groups?.second ?? "");
+			let offset = parseInt(match.groups?.offset ?? "");
+			input = 
+				year.toString().padStart(4, "0") + "-" +
+				month.toString().padStart(2, "0") + "-" +
+				day.toString().padStart(2, "0") + "T" +
+				hour.toString().padStart(2, "0") + ":" +
+				minute.toString().padStart(2, "0") + ":" +
+				second.toString().padStart(2, "0") + ".000" +
+				(offset == 0 ? "Z" : (offset.toString().padStart(2, "0") + ":00"));
+		}
+		let unixTimestamp = Date.parse(input);
+		if (Number.isNaN(unixTimestamp)) return null;
+		return new Date(unixTimestamp);
+	}
+	public static toLocalIso8601(d: Date): string {
+		return d.getFullYear().toString() + "-" + 
+			(1+d.getMonth()).toString().padStart(2, "0") + "-" + 
+			d.getDate().toString().padStart(2, "0") + "T" + 
+			d.getHours().toString().padStart(2, "0") + ":" + 
+			d.getMinutes().toString().padStart(2, "0") + ":" + 
+			d.getSeconds().toString().padStart(2, "0") + 
+			(d.getMilliseconds() == 0 ? "" : "." + d.getMilliseconds().toString().padStart(3, "0"));
+	}
 	public onLoad() {
 		const targetInputs = globalThis.sergiosgc
 			.queryElements("css:input[type='datetime-local']")
@@ -19,16 +53,7 @@ export default class InputDatetimeUtc {
 			.filter( input => !Number.isNaN(Date.parse(input.getAttribute("value") ?? "")) )
 			.forEach( input => {
 				const valueAsDate = new Date(Date.parse(input.getAttribute("value") ?? ""));
-				input.setAttribute("value", 
-					"" +
-					valueAsDate.getFullYear() + "-" +
-					("" + valueAsDate.getMonth()).padStart(2, "0") + "-" +
-					("" + valueAsDate.getDate()).padStart(2, "0") + " " +
-					("" + valueAsDate.getHours()).padStart(2, "0") + ":" +
-					("" + valueAsDate.getMinutes()).padStart(2, "0") + ":" +
-					("" + valueAsDate.getSeconds()).padStart(2, "0") + "." +
-					valueAsDate.getMilliseconds()
-				);
+				input.setAttribute("value", InputDatetimeUtc.toLocalIso8601(valueAsDate));
 		});
 		// Setup submit event handlers to convert back to UTC
 		targetInputs.forEach( input => {
@@ -38,20 +63,10 @@ export default class InputDatetimeUtc {
 		globalThis.sergiosgc
 			.queryElements("css:span.datetime-utc")
 			.forEach( span => {
-				const valueAsTimestamp = Date.parse(span.innerText);
-				if (Number.isNaN(valueAsTimestamp)) return;
-				const valueAsDate = new Date(valueAsTimestamp);
+				const valueAsDate = InputDatetimeUtc.parseDate(span.innerText);
+				if (valueAsDate == null) return;
 				while (span.firstChild) span.removeChild(span.firstChild);
-				span.append(document.createTextNode(
-					"" +
-					valueAsDate.getFullYear() + "-" +
-					("" + valueAsDate.getMonth()).padStart(2, "0") + "-" +
-					("" + valueAsDate.getDate()).padStart(2, "0") + " " +
-					("" + valueAsDate.getHours()).padStart(2, "0") + ":" +
-					("" + valueAsDate.getMinutes()).padStart(2, "0") + ":" +
-					("" + valueAsDate.getSeconds()).padStart(2, "0")
-				));
-
+				span.append(document.createTextNode(InputDatetimeUtc.toLocalIso8601(valueAsDate).replace("T", " ")));
 			});
 
 	}
@@ -59,16 +74,7 @@ export default class InputDatetimeUtc {
 		const valueAsTimestamp = Date.parse(input.value);
 		if (Number.isNaN(valueAsTimestamp)) return;
 		const valueAsDate = new Date(valueAsTimestamp);
-		input.setAttribute("value", 
-			"" +
-			valueAsDate.getUTCFullYear() + "-" +
-			("" + valueAsDate.getUTCMonth()).padStart(2, "0") + "-" +
-			("" + valueAsDate.getUTCDate()).padStart(2, "0") + " " +
-			("" + valueAsDate.getUTCHours()).padStart(2, "0") + ":" +
-			("" + valueAsDate.getUTCMinutes()).padStart(2, "0") + ":" +
-			("" + valueAsDate.getUTCSeconds()).padStart(2, "0") + "." +
-			valueAsDate.getUTCMilliseconds()
-		);
+		input.setAttribute("value", InputDatetimeUtc.toLocalIso8601(valueAsDate));
 	}
 }
 declare global {
