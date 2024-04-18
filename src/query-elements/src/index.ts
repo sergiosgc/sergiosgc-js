@@ -14,3 +14,11 @@ declare global {
 }
 globalThis.sergiosgc.queryElements = queryElements;
 globalThis.sergiosgc.queryElement = (expression: string, referenceNode: Element | null = null) => queryElements(expression, referenceNode)[0] ?? null;
+declare global {
+    interface Element { 
+        queryElements: (expression: string) => Array<HTMLElement>, 
+        queryElement: (expression: string) => HTMLElement | null,
+    }
+}
+Element.prototype.queryElements = function(expression: string) : Array<HTMLElement> { return globalThis.sergiosgc.queryElements(expression, this ); }
+Element.prototype.queryElement = function(expression: string) : HTMLElement | null { return globalThis.sergiosgc.queryElement(expression, this ); }
