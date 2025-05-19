@@ -3,6 +3,8 @@ import "../../call-on-load/src/index";
 
 export default class InputDatetimeUtc {
 	private static instance: InputDatetimeUtc;
+	public static inputDateFormatter = InputDatetimeUtc.toLocalIso8601;
+	public static elementDateFormatter = InputDatetimeUtc.toLocalIso8601;
 	constructor() {
 		globalThis.sergiosgc.callOnLoad(this.onLoad.bind(this));
 	}
@@ -11,9 +13,8 @@ export default class InputDatetimeUtc {
 		return InputDatetimeUtc.instance;
 	}
 	public static parseDate(input: string): Date | null{
-		const re = /\w{3}, (?<day>\d+) (?<month>Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (?<year>\d+) (?<hour>\d\d):(?<minute>\d\d):(?<second>\d\d)(?:\.\d+)? (?<offset>[-+]?\d+)/;
 		let match;
-		if (match = input.match(re)) {
+		if (match = input.match(/\w{3}, (?<day>\d+) (?<month>Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (?<year>\d+) (?<hour>\d\d):(?<minute>\d\d):(?<second>\d\d)(?:\.\d+)? (?<offset>[-+]?\d+)/)) {
 			let day = parseInt(match.groups?.day ?? "");
 			let month = 1 + ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].indexOf(match.groups?.month ?? "");
 			let year = parseInt(match.groups?.year ?? "");
@@ -53,7 +54,7 @@ export default class InputDatetimeUtc {
 			.forEach( input => {
 				const valueAsDate = InputDatetimeUtc.parseDate(input.getAttribute("value") ?? "");
 				if (valueAsDate == null) return;
-				input.setAttribute("value", InputDatetimeUtc.toLocalIso8601(valueAsDate));
+				input.setAttribute("value", InputDatetimeUtc.inputDateFormatter(valueAsDate));
 		});
 		// Setup submit event handlers to convert back to UTC
 		targetInputs.forEach( input => {
@@ -61,12 +62,12 @@ export default class InputDatetimeUtc {
 		});
 		// Convert UTC dates in date spans
 		globalThis.sergiosgc
-			.queryElements("css:span.datetime-utc")
-			.forEach( span => {
-				const valueAsDate = InputDatetimeUtc.parseDate(span.innerText);
+			.queryElements("css:.datetime-utc")
+			.forEach( element => {
+				const valueAsDate = InputDatetimeUtc.parseDate(element.innerText);
 				if (valueAsDate == null) return;
-				while (span.firstChild) span.removeChild(span.firstChild);
-				span.append(document.createTextNode(InputDatetimeUtc.toLocalIso8601(valueAsDate).replace("T", " ")));
+				while (element.firstChild) element.removeChild(element.firstChild);
+				element.append(document.createTextNode(InputDatetimeUtc.elementDateFormatter(valueAsDate).replace("T", " ")));
 			});
 
 	}
@@ -74,7 +75,7 @@ export default class InputDatetimeUtc {
 		const valueAsTimestamp = Date.parse(input.value);
 		if (Number.isNaN(valueAsTimestamp)) return;
 		const valueAsDate = new Date(valueAsTimestamp);
-		input.setAttribute("value", InputDatetimeUtc.toLocalIso8601(valueAsDate));
+		input.setAttribute("value", InputDatetimeUtc.inputDateFormatter(valueAsDate));
 	}
 }
 declare global {
