@@ -10,8 +10,10 @@
   "license": "Proprietary",
   "devDependencies": {
     "@types/node": "^20.5.1",
-    "ts-loader": "^9.4.4",
-    "webpack": "^5.88.2",
-    "webpack-cli": "^5.1.4"
+    "esbuild": "0.25.4",
+    "ts-loader": "^9.4.4"
+  },
+  "dependencies": {
+    "typescript": "^5.8.3"
   }
 }
