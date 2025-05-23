@@ -13,7 +13,7 @@ DragAndDropHelper assumes an opinionated approach to drag and drop operations in
 Selector expressions are queryElements expressions. Check the relevant documentation in this repo.
 
 Instantiate `globalThis.sergiosgc.DragAndDropHelper` with these arguments:
- - rootNode: The rootNode from where to evaluate the following two arguments;
+ - rootNode: The context node from where to evaluate the following two arguments;
  - draggableSelector: A queryElements expression that results in the elements that can be dragged;
  - droppableSelector: A queryElements expression that results in the elements that _may_ be drop targets (further refined by validDropTargetCallback)
  - transferDataCallback: A function that returns the transfer data as any type that can be JSON encoded. It will be called when drag starts and receives two arguments:
