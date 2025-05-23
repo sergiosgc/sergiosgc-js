@@ -21,13 +21,15 @@ Instantiate `globalThis.sergiosgc.DragAndDropHelper` with these arguments:
    - The drag start event (DragEvent type)
 
    It may be null, meaning no data is transferred.
- - eventNameOrCallback: Either a string with the name of the CustomEvent to be emited, or a callback. If null, the default is "dragandrop". The callback function should return either a string (the event name), or a CustomEvent instance. It gets passed, as arguments:
+ - eventNameOrCallback: Either a string with the name of the CustomEvent to be emited, or a callback. The callback function should return either a string (the event name), or a CustomEvent instance. It gets passed, as arguments:
    - The drop event target, an HTMLElement;
    - The drop event, a DragEvent.
+
    If null, defaults to `draganddrop`;
  - validDropTargetCallback: A callback, returning true if a target is a valid drop target, false otherwise. It gets passed, as arguments:
    - The target to be evaluated, an HTMLElement;
    - The DragEvent that originated the query.
+
    If null, no candidate drop targets are ever rejected;
  - hoverClass: Class to be assigned to valid drop targets being hovered. null if class setting is not required;
  - onDragClass: Class to be assigned to elements being dragged. null if class setting is not required;
