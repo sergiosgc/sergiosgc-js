@@ -21,7 +21,7 @@ Say you have this reference node:
 
 You can create, fill out and append a user card like this:
 ```
-document.getElementById("logged-in-user-container",
+document.getElementById("logged-in-user-container").appendChild(
   document.getElementById("user-card-template").templateNode(
     true,
     {
