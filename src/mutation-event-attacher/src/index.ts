@@ -2,20 +2,20 @@ import "../../sergiosgc/src/index";
 import "../../call-on-load/src/index";
 
 export default class MutationEventAttacher {
-	rootNode: Element;
-	xpathOrSelector: string;
-	eventName: string;
-	handlerFunction: (arg0: Event) => void;
-	targets: HTMLElement[] = [];
+    rootNode: Element;
+    xpathOrSelector: string;
+    eventName: string;
+    handlerFunction: (arg0: Event) => void;
+    targets: HTMLElement[] = [];
     constructor(rootNode: Element,
-				xpathOrSelector: string,
-				eventName: string,
-				handlerFunction: ((arg0: Event) => void)) {
+                xpathOrSelector: string,
+                eventName: string,
+                handlerFunction: ((arg0: Event) => void)) {
         this.rootNode = rootNode;
         this.xpathOrSelector = xpathOrSelector;
         this.eventName = eventName;
         this.handlerFunction = handlerFunction;
-		sergiosgc.callOnLoad(this.init.bind(this));
+        sergiosgc.callOnLoad(this.init.bind(this));
     }
     init() {
         this.targets = sergiosgc.queryElements(this.xpathOrSelector, this.rootNode);
