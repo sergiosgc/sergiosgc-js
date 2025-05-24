@@ -10,6 +10,9 @@ This is a loosely coupled of Javascript libraries I use regularly. Check each fo
 (cd <private path of sergiosgc-js> && \
 yarn install && \
 ./node_modules/.bin/esbuild src/index.ts --bundle --sourcemap --target=es6 --outfile=<public path of javascript assets>/sergiosgc-js.js)
+# or
+yarn run build
+cp dist/* <public path of javascript assets>
 ```
 3. Include the javascript in your document's HEAD:
 ```

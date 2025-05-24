@@ -4,8 +4,7 @@
   "license": "MIT",
   "description": "Loosely coupled personal javascript library",
   "scripts": {
-    "lint": "eslint --ignore-path .gitignore .",
-    "lint:fix": "npm run lint -- --fix"
+    "build": "esbuild src/index.ts --bundle --sourcemap --target=es6 --outfile=dist//sergiosgc-js.js"
   },
   "author": "Sérgio Carvalho",
   "devDependencies": {
