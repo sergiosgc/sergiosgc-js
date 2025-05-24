@@ -1,13 +1,13 @@
 {
   "name": "sergiosgc-js",
   "version": "1.0.0",
+  "license": "MIT",
   "description": "Loosely coupled personal javascript library",
   "scripts": {
     "lint": "eslint --ignore-path .gitignore .",
     "lint:fix": "npm run lint -- --fix"
   },
   "author": "Sérgio Carvalho",
-  "license": "Proprietary",
   "devDependencies": {
     "@types/node": "^20.5.1",
     "esbuild": "0.25.4",
