@@ -36,6 +36,9 @@ export default class InputDatetimeUtc {
         if (Number.isNaN(unixTimestamp)) return null;
         return new Date(unixTimestamp);
     }
+    public static toUTCIso8601(d: Date): string {
+        return d.toISOString();
+    }
     public static toLocalIso8601(d: Date): string {
         return d.getFullYear().toString() + "-" + 
             (1+d.getMonth()).toString().padStart(2, "0") + "-" + 
@@ -56,11 +59,13 @@ export default class InputDatetimeUtc {
                 if (valueAsDate == null) return;
                 input.setAttribute("value", InputDatetimeUtc.inputDateFormatter(valueAsDate));
         });
-        // Setup submit event handlers to convert back to UTC
-        targetInputs.forEach( input => {
-            input.form?.addEventListener("submit", this.convertInputToUTC.bind(this, input));
+        targetInputs.map( input => input.form ).filter( form => form != null ).forEach( form => {
+            form.addEventListener("formdata", this.convertInputValuesToUTC.bind(
+                this,
+                targetInputs
+                .filter( input => input.form == form )
+            ));
         });
-        // Convert UTC dates in date spans
         globalThis.sergiosgc
             .queryElements("css:.datetime-utc")
             .forEach( element => {
@@ -71,11 +76,15 @@ export default class InputDatetimeUtc {
             });
 
     }
-    public convertInputToUTC(input: HTMLInputElement) {
-        const valueAsTimestamp = Date.parse(input.value);
-        if (Number.isNaN(valueAsTimestamp)) return;
-        const valueAsDate = new Date(valueAsTimestamp);
-        input.setAttribute("value", InputDatetimeUtc.inputDateFormatter(valueAsDate));
+    public convertInputValuesToUTC(inputs: HTMLInputElement[], formData: FormDataEvent) {
+        if (inputs.length == 0) return;
+        const form = inputs[0].form;
+        inputs
+        .map( input => [ input.name.toString(), Date.parse(input.value) ] )
+        .filter( ( [ _name, timestamp ]: [string, number] ) => !Number.isNaN(timestamp) )
+        .forEach( ( [ name, timestamp ] : [string, number] ) => {
+            formData.formData.set(name, InputDatetimeUtc.toUTCIso8601(new Date(timestamp)));
+        });
     }
 }
 declare global {
