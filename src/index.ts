@@ -20,6 +20,7 @@ import "./template-node/src/index";
 import "./overlay-dialog/src/index";
 import "./konami-code/src/index";
 import "./input-datetime-utc/src/index";
+import "./location-polyfill/src/index";
 
 (function() {
     const event = new Event("sergiosgc.modules_loaded");
