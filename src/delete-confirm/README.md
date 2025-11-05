@@ -14,3 +14,8 @@ When the user clicks the button, the text wil change to "Please wait...", the ev
 
 On first click, the button will have the class `delete-confirm-waiting` added to its classlist. This class is replaced by `delete-confirm` when prompting for confirmation.
 
+To disable this behaviour in an element that has the `delete` class, add the `skipconfirmation` class:
+
+```
+<a href="delete-all" class="delete skipconfirmation">Delete the universe</a>
+```
