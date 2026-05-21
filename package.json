@@ -13,7 +13,7 @@
   },
   "scripts": {
     "watch": "find src | entr yarn build",
-    "build": "vite build"
+    "build": "tsc && vite build"
   },
   "author": "Sérgio Carvalho"
 }
