@@ -29,7 +29,7 @@ class Literal implements Token {
     constructor(value:string) {
         this.value = value
     }
-    format(named: any, positional: any[]): string {
+    format(_named: any, _positional: any[]): string {
         return this.value;
     }
 }
@@ -102,17 +102,17 @@ class Conversion implements Token {
         const pad_character = override_pad_character ?? (this.flags.includes('0') && !this.flags.includes('-')) ? '0' : ' ';
         return this.flags.includes('-') || override_pad_character != null ? value.padEnd(width, pad_character) : value.padStart(width, pad_character);
     }
-    d(value: any, width: number, precision: number): string {
+    d(value: any, width: number, _precision: number): string {
         return this.padValue("" + Math.round(parseInt(value)), width);
     }
-    o(value: any, width: number, precision: number): string {
+    o(value: any, width: number, _precision: number): string {
         const int_val = Math.floor(Math.abs(value));
         let result = int_val.toString(8);
         if (this.flags.includes('#') && result[0] != '0') result = '0' + result;
         return this.padValue(result, width);
     }
     u(value: any, width: number, precision: number): string { return this.d(Math.floor(Math.abs(value)), width, precision); }
-    x(value: any, width: number, precision: number): string {
+    x(value: any, width: number, _precision: number): string {
         return (
             (this.flags.includes('#') ? '0x' : '') + 
             this.padValue( Math.floor(Math.abs(value)).toString(16), this.flags.includes('#') ? Math.max(0, width - 2) : width )
@@ -132,7 +132,7 @@ class Conversion implements Token {
             width
         );
     }
-    s(value: any, width: number, precision: number): string {
+    s(value: any, width: number, _precision: number): string {
         return this.padValue(width == 0 ? value : ("" + value).substring(0, width), width);
     }
 

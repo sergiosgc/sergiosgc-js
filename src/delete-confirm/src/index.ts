@@ -4,7 +4,7 @@ globalThis.sergiosgc.callOnLoad(function(): void {
 
 const onclick = function(ev: MouseEvent): void {
     let target = ev.target;
-    while (target && !('delete' in target.classList)) target = target.parentNode;
+    while (target && !('delete' in (target as HTMLElement).classList)) target = (target as HTMLElement).parentNode;
     if (!target) target = ev.target;
     if ('skipconfirmation' in (target as HTMLElement).classList) return;
     if ('delete-confirm' in (target as HTMLElement).classList) return;

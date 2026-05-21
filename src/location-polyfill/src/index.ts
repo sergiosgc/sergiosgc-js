@@ -5,7 +5,7 @@ declare global {
     }
 }
 Location.prototype.setSearchParams = function(params: { [key: string]: string }): void {
-    let currentURL = new URL(window.location);
+    let currentURL = new URL(window.location as any);
     for (const [key, value] of Object.entries(params)) {
         if (value === '') {
             currentURL.searchParams.delete(key);
@@ -13,5 +13,5 @@ Location.prototype.setSearchParams = function(params: { [key: string]: string })
             currentURL.searchParams.set(key, value);
         }
     }
-    window.location = currentURL;
+    window.location = currentURL as any;
 }

@@ -60,7 +60,7 @@ export default class InputDatetimeUtc {
                 input.setAttribute("value", InputDatetimeUtc.inputDateFormatter(valueAsDate));
         });
         targetInputs.map( input => input.form ).filter( form => form != null ).forEach( form => {
-            form.addEventListener("formdata", this.convertInputValuesToUTC.bind(
+            if (form) form.addEventListener("formdata", this.convertInputValuesToUTC.bind(
                 this,
                 targetInputs
                 .filter( input => input.form == form )
@@ -78,12 +78,11 @@ export default class InputDatetimeUtc {
     }
     public convertInputValuesToUTC(inputs: HTMLInputElement[], formData: FormDataEvent) {
         if (inputs.length == 0) return;
-        const form = inputs[0].form;
         inputs
-        .map( input => [ input.name.toString(), Date.parse(input.value) ] )
-        .filter( ( [ _name, timestamp ]: [string, number] ) => !Number.isNaN(timestamp) )
-        .forEach( ( [ name, timestamp ] : [string, number] ) => {
-            formData.formData.set(name, InputDatetimeUtc.toUTCIso8601(new Date(timestamp)));
+        .map( input => ({ name: input.name.toString(), timestamp: Date.parse(input.value) }) )
+        .filter( input => !Number.isNaN(input.timestamp) )
+        .forEach( input => {
+            formData.formData.set(input.name, InputDatetimeUtc.toUTCIso8601(new Date(input.timestamp)));
         });
     }
 }

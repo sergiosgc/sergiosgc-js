@@ -91,7 +91,7 @@ export default class DragAndDropHelper {
         this.rootElement.classList.add(this.onDragClass);
         ev.dataTransfer?.setData('application/json', JSON.stringify(this.transferDataCallback(ev.target as Node, ev)));
     }
-    dragend(ev: DragEvent) {
+    dragend(_ev: DragEvent) {
         this.rootElement.classList.remove(this.onDragClass);
     }
 }
