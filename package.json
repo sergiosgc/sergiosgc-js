@@ -3,16 +3,17 @@
   "version": "1.0.0",
   "license": "MIT",
   "description": "Loosely coupled personal javascript library",
-  "scripts": {
-    "build": "esbuild src/index.ts --bundle --sourcemap --target=es6 --outfile=dist//sergiosgc-js.js"
-  },
-  "author": "Sérgio Carvalho",
-  "devDependencies": {
-    "@types/node": "^20.5.1",
-    "esbuild": "0.25.4",
-    "ts-loader": "^9.4.4"
-  },
   "dependencies": {
-    "typescript": "^5.8.3"
-  }
+    "@types/node": "^25.9.0"
+  },
+  "devDependencies": {
+    "@swc/helpers": "^0.5.21",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.13"
+  },
+  "scripts": {
+    "watch": "find src | entr yarn build",
+    "build": "vite build"
+  },
+  "author": "Sérgio Carvalho"
 }
