@@ -5,12 +5,9 @@ This is a loosely coupled of Javascript libraries I use regularly. Check each fo
 # Installation
 
 1. Add this as a git submodule in a private location of your web project.
-2. Use esbuild to build the project and output to your public javascript folder:
+2. Use vite to build the project and output to your public javascript folder:
 ```
 (cd <private path of sergiosgc-js> && \
-yarn install && \
-./node_modules/.bin/esbuild src/index.ts --bundle --sourcemap --target=es6 --outfile=<public path of javascript assets>/sergiosgc-js.js)
-# or
 yarn run build
 cp dist/* <public path of javascript assets>
 ```
