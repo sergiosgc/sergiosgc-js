@@ -39,6 +39,8 @@ import "../../mutation-event-attacher/src/index";
         const form = ev.target as HTMLFormElement;
         const formData = new FormData(form);
         const json: any = {};
+        ev.preventDefault();
+        ev.stopPropagation();
         for (const [key, value] of formData.entries()) {
             if (key.endsWith('[]') && key.slice(0, -2).indexOf('[]') !== -1) {
                 throw new Error(`Unable to insert key ${key}, because it contains multiple nested arrays`);
@@ -62,12 +64,11 @@ import "../../mutation-event-attacher/src/index";
                 }
                 cursor = cursor[part];
             }
-            cursor[lastKeyPart] = formDataToJsonType(form, value, key);
+            cursor[lastKeyPart as any] = formDataToJsonType(form, value, key);
         }
 
         const url = form.getAttribute('action') ?? (window.location.href as string);
         const method = form.getAttribute('method') ?? 'POST';
-        console.log(url, method);
         fetch(url, {
             method: method,
             headers: {
@@ -93,8 +94,6 @@ import "../../mutation-event-attacher/src/index";
         .catch(err => {
             console.error('Failed to submit JSON form:', err);
         });
-        ev.preventDefault();
-        ev.stopPropagation();
     };
 
     new globalThis.sergiosgc.MutationEventAttacher(
