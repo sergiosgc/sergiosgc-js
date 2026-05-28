@@ -24,6 +24,7 @@ import "./location-polyfill/src/index";
 import "./form-enctype-json/src/index";
 import "./sooma-form/src/index";
 import "./styled-form-validity/src/index";
+import "./part-fetch/src/index";
 
 (function() {
     const event = new Event("sergiosgc.modules_loaded");

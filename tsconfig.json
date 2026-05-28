@@ -25,7 +25,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "ES2018",
-    "types": [],
+    "types": ["dom-navigation"],
     "useDefineForClassFields": false
   },
   "include": ["src/index.ts"],
