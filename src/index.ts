@@ -22,6 +22,7 @@ import "./konami-code/src/index";
 import "./input-datetime-utc/src/index";
 import "./location-polyfill/src/index";
 import "./form-enctype-json/src/index";
+import "./sooma-form/src/index";
 
 (function() {
     const event = new Event("sergiosgc.modules_loaded");
