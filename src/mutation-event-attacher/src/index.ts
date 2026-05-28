@@ -7,19 +7,23 @@ export default class MutationEventAttacher {
     eventName: string;
     handlerFunction: (arg0: Event) => void;
     targets: HTMLElement[] = [];
+    options: boolean | AddEventListenerOptions;
     constructor(rootNode: Element,
                 xpathOrSelector: string,
                 eventName: string,
-                handlerFunction: ((arg0: Event) => void)) {
+                handlerFunction: ((arg0: Event) => void), 
+                options?: boolean | AddEventListenerOptions
+            ) {
         this.rootNode = rootNode;
         this.xpathOrSelector = xpathOrSelector;
         this.eventName = eventName;
         this.handlerFunction = handlerFunction;
+        this.options = options ?? false;
         sergiosgc.callOnLoad(this.init.bind(this));
     }
     init() {
         this.targets = sergiosgc.queryElements(this.xpathOrSelector, this.rootNode);
-        this.targets.forEach( (target) => target.addEventListener(this.eventName, this.handlerFunction) );
+        this.targets.forEach( (target) => target.addEventListener(this.eventName, this.handlerFunction, this.options) );
         const observer = new MutationObserver(this.mutationCallback.bind(this));
         observer.observe(this.rootNode, { 
             childList: true,

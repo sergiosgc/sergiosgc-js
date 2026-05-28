@@ -7,12 +7,15 @@ Attach/detach event handlers on dynamically changing DOM
 Selectors are `queryElement` selectors. Check the relevant documentation in this repo.
 
 Instantiate `MutationEventAttacher` with these arguments:
- - rootNode: The context node for the selector expression;
- - selector: An XPath or CSS selector defining elements where to attach the eventHandler;
- - eventName: The name of the event to listen for;
- - handlerFunction: The event handler function
+
+- rootNode: The context node for the selector expression;
+- selector: An XPath or CSS selector defining elements where to attach the eventHandler;
+- eventName: The name of the event to listen for;
+- handlerFunction: The event handler function
+- (optional) Event listener options as used by `addEventListener`
 
 Example:
+
 ```
 new globalThis.MutationEventAttacher(
  document,
