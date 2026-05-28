@@ -86,7 +86,10 @@ import "../../mutation-event-attacher/src/index";
             }
             try {
                 const responseData = await response.json();
-                form.dispatchEvent(new CustomEvent('form-enctype-json-response', { bubbles: true, detail: responseData }));
+                form.dispatchEvent(new CustomEvent('form-enctype-json-response', { bubbles: true, detail: {
+                    status: response.status,
+                    data: responseData
+                } }));
             } catch (_) {
                 console.error(`HTTP error: ${response.status} ${response.statusText}`);
             }
