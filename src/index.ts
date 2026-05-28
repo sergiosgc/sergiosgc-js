@@ -23,6 +23,7 @@ import "./input-datetime-utc/src/index";
 import "./location-polyfill/src/index";
 import "./form-enctype-json/src/index";
 import "./sooma-form/src/index";
+import "./styled-form-validity/src/index";
 
 (function() {
     const event = new Event("sergiosgc.modules_loaded");

@@ -37,4 +37,17 @@ import "../../mutation-event-attacher/src/index";
             }
         }
     );
+    new globalThis.sergiosgc.MutationEventAttacher(
+        document.documentElement,
+        "css:form.sooma-form",
+        'change',
+        function (event: Event) {
+            const target = event.target as any;
+            if (!target) return;
+            if (!target.dataset.serverSuppliedValidation) return;
+            target.setCustomValidity('');
+            target.removeAttribute('data-server-supplied-validation');
+            target.form?.reportValidity();
+        },
+    );
 })();
