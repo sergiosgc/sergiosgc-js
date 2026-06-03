@@ -118,3 +118,17 @@ Note that `age` is no longer a string, but a JSON integer. Acceptable values for
 - `string`
 
 Any unknown encoding, as well as any field that has no `sergiosgc-enc` attribute is encoded as a string.
+
+## Form submission event
+
+Much as a regular form sends a `submit` event, this library emits a `form-enctype-json-submit` custom event right before form submission. The custom event contains a `detail` with this structure:
+
+```
+{
+    url: <string>,
+    method: <string>,
+    json: <object>
+}
+```
+
+You may modify the event detail to affect the request. The event is cancellable, and so the default behaviour can be prevented with `preventDefault()`

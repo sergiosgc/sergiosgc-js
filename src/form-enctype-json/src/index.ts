@@ -69,34 +69,42 @@ import "../../mutation-event-attacher/src/index";
 
         const url = form.getAttribute('action') ?? (window.location.href as string);
         const method = form.getAttribute('method') ?? 'POST';
-        fetch(url, {
+        const jsonSubmitEvent = new CustomEvent('form-enctype-json-submit', { bubbles: true, detail: {
+            url: url,
             method: method,
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify(json),
-            redirect: "manual"
-        })
-        .then(async (response) => {
-            if (response.type === "opaqueredirect" || (response.status >= 300 && response.status < 400 && response.headers.has('Location'))) {
-                const location = response.headers.get("Location") ?? url;
-                (window.location as any) = location;
-                return;
-            }
-            try {
-                const responseData = await response.json();
-                form.dispatchEvent(new CustomEvent('form-enctype-json-response', { bubbles: true, detail: {
-                    status: response.status,
-                    data: responseData
-                } }));
-            } catch (_) {
-                console.error(`HTTP error: ${response.status} ${response.statusText}`);
-            }
-        })
-        .catch(err => {
-            console.error('Failed to submit JSON form:', err);
-        });
+            json: json
+        } });
+        form.dispatchEvent(jsonSubmitEvent);
+        if (!jsonSubmitEvent.defaultPrevented) {
+            fetch(jsonSubmitEvent.detail.url, {
+                method: jsonSubmitEvent.detail.method,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(jsonSubmitEvent.detail.json),
+                redirect: "manual"
+            })
+            .then(async (response) => {
+                if (response.type === "opaqueredirect" || (response.status >= 300 && response.status < 400 && response.headers.has('Location'))) {
+                    const location = response.headers.get("Location") ?? url;
+                    (window.location as any) = location;
+                    return;
+                }
+                try {
+                    const responseData = await response.json();
+                    form.dispatchEvent(new CustomEvent('form-enctype-json-response', { bubbles: true, detail: {
+                        status: response.status,
+                        data: responseData
+                    } }));
+                } catch (_) {
+                    console.error(`HTTP error: ${response.status} ${response.statusText}`);
+                }
+            })
+            .catch(err => {
+                console.error('Failed to submit JSON form:', err);
+            });
+        }
     };
 
     new globalThis.sergiosgc.MutationEventAttacher(
