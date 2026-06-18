@@ -14,6 +14,9 @@ import "../../mutation-event-attacher/src/index";
         }
         const isArray = jsonType.endsWith('[]');
         if (isArray) {
+            if (value.toString().trim() === "") {
+                return [];
+            }
             const parts = value.toString().split(',');
             return parts.map(part => {
                 switch (jsonType.slice(0, -2)) {
