@@ -2,8 +2,12 @@ import "../../sergiosgc/src/index";
 import "../../mutation-event-attacher/src/index";
 
 (function() {
-    const stringToArray = function(value: string) {
+    const stringToStringArray = function(value: string) {
         return value.split(/[\n\t\r]+/).filter((item) => item.trim() !== "");
+    }
+    const stringToIntegerArray = function(value: string) {
+        console.log(value, value.split(/[,]+/).filter((item) => item.trim() !== "").map(item => parseInt(item)));
+        return value.split(/[,]+/).filter((item) => item.trim() !== "").map(item => parseInt(item));
     }
     const formDataToJsonType = function(form: HTMLFormElement, value: FormDataEntryValue, key: string) {
         let jsonType = "string";
@@ -26,19 +30,21 @@ import "../../mutation-event-attacher/src/index";
                     case "boolean": return part === "true";
                     case "integer": return parseInt(part as string);
                     case "float": return parseFloat(part as string);
-                    case "string_to_string_array": return stringToArray(part as string);
+                    case "string_to_string_array": return stringToStringArray(part as string);
+                    case "string_to_integer_array": return stringToIntegerArray(part as string);
                     default: return part as string;
                 }
             });
         } else {
-            if (jsonType !== "string" && value == "") {
+            if (value == "" && ["boolean", "integer", "float"].includes(jsonType)) {
                 return null;
             }
             switch (jsonType) {
                 case "boolean": return value === "true";
                 case "integer": return parseInt(value as string);
                 case "float": return parseFloat(value as string);
-                case "string_to_string_array": return stringToArray(value as string);
+                case "string_to_string_array": return stringToStringArray(value as string);
+                case "string_to_integer_array": return stringToIntegerArray(value as string);
                 default: return value as string;
             }
         }
