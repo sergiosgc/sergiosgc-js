@@ -2,6 +2,9 @@ import "../../sergiosgc/src/index";
 import "../../mutation-event-attacher/src/index";
 
 (function() {
+    const stringToArray = function(value: string) {
+        return value.split(/[\n\t\r]+/).filter((item) => item.trim() !== "");
+    }
     const formDataToJsonType = function(form: HTMLFormElement, value: FormDataEntryValue, key: string) {
         let jsonType = "string";
         const formItem = form.elements.namedItem(key);
@@ -23,6 +26,7 @@ import "../../mutation-event-attacher/src/index";
                     case "boolean": return part === "true";
                     case "integer": return parseInt(part as string);
                     case "float": return parseFloat(part as string);
+                    case "string_to_string_array": return stringToArray(part as string);
                     default: return part as string;
                 }
             });
@@ -34,6 +38,7 @@ import "../../mutation-event-attacher/src/index";
                 case "boolean": return value === "true";
                 case "integer": return parseInt(value as string);
                 case "float": return parseFloat(value as string);
+                case "string_to_string_array": return stringToArray(value as string);
                 default: return value as string;
             }
         }
