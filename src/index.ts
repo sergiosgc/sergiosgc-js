@@ -26,6 +26,7 @@ import "./sooma-form/src/index";
 import "./styled-form-validity/src/index";
 import "./part-fetch/src/index";
 import "./form-conditional-field/src/index";
+import "./fetch-pipeline/src/index";
 
 (function() {
     const event = new Event("sergiosgc.modules_loaded");
