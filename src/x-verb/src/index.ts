@@ -9,18 +9,22 @@ export default class XVerb {
         url.searchParams.delete(XVerb.verbParameter);
         ev.intercept({
             handler: async () => {
-              const response = await fetch(url, { method: method });
-              let executeDefault = document.dispatchEvent(new CustomEvent('x-verb-response', { bubbles: true, detail: response, cancelable: true }));
-              if (!executeDefault) return;
-              if (!response.ok) {
-                document.dispatchEvent(new CustomEvent('x-verb-response-error', { bubbles: true, detail: response }));
-                return;
-              }
-              if (response.redirected) {
-                window.location = new URL(response.url) as any;
-                return;
-              }
-              document.dispatchEvent(new CustomEvent('x-verb-response-success', { bubbles: true, detail: response }));
+                try {
+                    const response = await fetch(url, { method: method, redirect: 'follow' });
+                    let executeDefault = document.dispatchEvent(new CustomEvent('x-verb-response', { bubbles: true, detail: response, cancelable: true }));
+                    if (!executeDefault) return;
+                    if (!response.ok) {
+                        document.dispatchEvent(new CustomEvent('x-verb-response-error', { bubbles: true, detail: response }));
+                        return;
+                    }
+                    if (response.redirected) {
+                        window.location = new URL(response.url) as any;
+                        return;
+                    }
+                    document.dispatchEvent(new CustomEvent('x-verb-response-success', { bubbles: true, detail: response }));
+                } catch (error) {
+                    console.error('Error:', error);
+                }
             }
           });
     }
