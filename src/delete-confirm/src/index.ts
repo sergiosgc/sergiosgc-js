@@ -36,6 +36,7 @@ export default class DeleteConfirm {
     }
     static init(): void {
         globalThis.sergiosgc.queryElements('css:a.' + DeleteConfirm.attachClass).forEach(a => a.addEventListener('click', DeleteConfirm.handleClick));
+        globalThis.sergiosgc.queryElements('css:button.' + DeleteConfirm.attachClass).forEach(a => a.addEventListener('click', DeleteConfirm.handleClick));
     }
 }
 declare global {
