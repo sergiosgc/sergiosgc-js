@@ -51,45 +51,49 @@ import "../../mutation-event-attacher/src/index";
     }
     const convertFormToJson = function(ev: SubmitEvent) {
         const form = ev.target as HTMLFormElement;
-        const formData = new FormData(form);
-        const json: any = {};
-        ev.preventDefault();
-        ev.stopPropagation();
-        for (const [key, value] of formData.entries()) {
-            if (key.endsWith('[]') && key.slice(0, -2).indexOf('[]') !== -1) {
-                throw new Error(`Unable to insert key ${key}, because it contains multiple nested arrays`);
-            }
-            if (key === "") {
-                throw new Error(`Unable to insert key ${key}, because it is empty`);
-            }
-            let cursor = json;
-            let partialKey = '';
-            let keyParts = key.split('.');
-            let lastKeyPart = keyParts.pop();
-            if (!lastKeyPart) {
-                throw new Error(`Unable to insert key ${key}, because it is empty`); // Actually impossible because of the empty string check above
-            }
-            for (let part of keyParts) {
-                partialKey += (partialKey ? '.' : '') + part;
-                if (!cursor[part]) {
-                    cursor[part] = {};
-                } else if (typeof cursor[part] !== 'object') {
-                    throw new Error(`Unable to insert key ${partialKey}, because current entry is not a dictionary: ${cursor[part]}`);
+        try {
+            const formData = new FormData(form);
+            const json: any = {};
+            ev.preventDefault();
+            ev.stopPropagation();
+            for (const [key, value] of formData.entries()) {
+                if (key.endsWith('[]') && key.slice(0, -2).indexOf('[]') !== -1) {
+                    throw new Error(`Unable to insert key ${key}, because it contains multiple nested arrays`);
                 }
-                cursor = cursor[part];
+                if (key === "") {
+                    throw new Error(`Unable to insert key ${key}, because it is empty`);
+                }
+                let cursor = json;
+                let partialKey = '';
+                let keyParts = key.split('.');
+                let lastKeyPart = keyParts.pop();
+                if (!lastKeyPart) {
+                    throw new Error(`Unable to insert key ${key}, because it is empty`); // Actually impossible because of the empty string check above
+                }
+                for (let part of keyParts) {
+                    partialKey += (partialKey ? '.' : '') + part;
+                    if (!cursor[part]) {
+                        cursor[part] = {};
+                    } else if (typeof cursor[part] !== 'object') {
+                        throw new Error(`Unable to insert key ${partialKey}, because current entry is not a dictionary: ${cursor[part]}`);
+                    }
+                    cursor = cursor[part];
+                }
+                cursor[lastKeyPart as any] = formDataToJsonType(form, value, key);
             }
-            cursor[lastKeyPart as any] = formDataToJsonType(form, value, key);
-        }
 
-        const url = form.getAttribute('action') ?? (window.location.href as string);
-        const method = form.getAttribute('method') ?? 'POST';
-        const jsonSubmitEvent = new CustomEvent('form-enctype-json-submit', { bubbles: true, detail: {
-            url: url,
-            method: method,
-            json: json
-        } });
-        form.dispatchEvent(jsonSubmitEvent);
-        if (!jsonSubmitEvent.defaultPrevented) {
+            const url = form.getAttribute('action') ?? (window.location.href as string);
+            const method = form.getAttribute('method') ?? 'POST';
+            const jsonSubmitEvent = new CustomEvent('form-enctype-json-submit', { 
+                bubbles: true,
+                cancelable: true,
+                detail: {
+                    url: url,
+                    method: method,
+                    json: json
+            } });
+            const runDefault = form.dispatchEvent(jsonSubmitEvent);
+            if (!runDefault) return;
             fetch(jsonSubmitEvent.detail.url, {
                 method: jsonSubmitEvent.detail.method,
                 headers: {
@@ -111,15 +115,42 @@ import "../../mutation-event-attacher/src/index";
                         status: response.status,
                         data: responseData
                     } }));
-                } catch (_) {
+                } catch (error) {
+                    const runDefault = form.dispatchEvent(new CustomEvent('form-enctype-json-response-error', { 
+                        bubbles: true,
+                        cancelable: true,
+                        detail: {
+                            response: response,
+                            error: error
+                        }
+                    }));
+                    if (!runDefault) return;
                     console.error(`HTTP error: ${response.status} ${response.statusText}`);
                 }
             })
             .catch(err => {
+                const runDefault = form.dispatchEvent(new CustomEvent('form-enctype-json-request-error', { 
+                    bubbles: true,
+                    cancelable: true,
+                    detail: {
+                        error: err
+                    }
+                }));
+                if (!runDefault) return;
                 console.error('Failed to submit JSON form:', err);
             });
+        } catch (error) {
+            const runDefault = form.dispatchEvent(new CustomEvent('form-enctype-json-request-error', { 
+                bubbles: true,
+                cancelable: true,
+                detail: {
+                    error: error
+                }
+            }));
+            if (!runDefault) return;
+            console.error('Failed to submit JSON form:', error);
         }
-    };
+    }
 
     new globalThis.sergiosgc.MutationEventAttacher(
         document.documentElement,

@@ -43,6 +43,12 @@ document.getElementById("example").addEventListener("form-enctype-json-response"
 });
 ```
 
+This event is cancelable, so handlers may interrupt form submission.
+
+If the submission generates a non-HTTP error, a custom event `form-enctype-json-request-error` will be fired on the form. The event detail contains one entry: `error`, the error that was raised.
+
+If the submission results in an HTTP error, a custom event `form-enctype-json-response-error` will be fired on the form. The event detail contains two entries: `response` and `error`, respectively the Fetch API response object and the error that was raised. This event is cancelable.
+
 If the submission results in an HTTP redirect, the browser is instructed to load the redirect location.
 
 ## JSON structure definition
