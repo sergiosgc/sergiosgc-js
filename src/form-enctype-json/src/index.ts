@@ -36,7 +36,7 @@ import "../../mutation-event-attacher/src/index";
                 }
             });
         } else {
-            if (value == "" && ["boolean", "integer", "float"].includes(jsonType)) {
+            if (value == "" && (["boolean", "integer", "float"].includes(jsonType) || /_nullonempty/.test(jsonType))) {
                 return null;
             }
             switch (jsonType) {
