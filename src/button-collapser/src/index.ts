@@ -13,7 +13,6 @@ window.sergiosgc.callOnLoad(function(): void {
             })(document.evaluate("following::node()", (ev.target as any), null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null)).filter( node => node.nodeType == Node.ELEMENT_NODE && node.tagName == 'A' );
             */
             let buttons = window.sergiosgc.queryElements("xpath:following::a", ev.target as Element);
-            console.log(buttons);
             for (var i=0; i<buttons.length && buttons[i].classList.contains('button') && !buttons[i].classList.contains('button-collapser'); i++);
             buttons.splice(i);
             var dropdownDiv = document.createElement('DIV');

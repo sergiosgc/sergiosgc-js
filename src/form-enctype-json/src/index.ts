@@ -6,7 +6,6 @@ import "../../mutation-event-attacher/src/index";
         return value.split(/[\n\t\r]+/).filter((item) => item.trim() !== "");
     }
     const stringToIntegerArray = function(value: string) {
-        console.log(value, value.split(/[,]+/).filter((item) => item.trim() !== "").map(item => parseInt(item)));
         return value.split(/[,]+/).filter((item) => item.trim() !== "").map(item => parseInt(item));
     }
     const formDataToJsonType = function(form: HTMLFormElement, value: FormDataEntryValue, key: string) {
