@@ -158,5 +158,5 @@ declare global {
 globalThis.sergiosgc.FetchPipeline = FetchPipeline;
 (function() {
     const observer = new XPathObserver("//*[@data-fetch-pipeline]", document.documentElement);
-    observer.addEventListener("xpathobserver.node.new", ev => FetchPipeline.attachToElement((ev as any).detail.target as HTMLElement));
+    observer.addEventListener("xpathobserver.node.new", ev => window.setTimeout(() => FetchPipeline.attachToElement((ev as any).detail.target as HTMLElement), 0));
 })();
