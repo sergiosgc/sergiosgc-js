@@ -31,6 +31,8 @@ import "../../xpath-observer/src/index";
                 if (!ev.destination.url.startsWith(srcAbsolute)) return;
                 ev.intercept({
                     handler: () => loadInto(ev.destination.url),
+                    focusReset: "manual",
+                    scroll: "manual",
                 });
             });
         }
