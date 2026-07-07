@@ -18,6 +18,10 @@ Add a `part-fetch` class and a `data-src` attribute to the element:
 </html>
 ```
 
+## In-place link loading
+
+Tag any A tag with class `sergiosgc-inplace`. It will be replaced with a `div`, with class `sergiosgc-inplace` and containing the contents of the result.
+
 ## Content capture
 
 If content of a certain type is to always be loaded into a page slot, set a `data-capture` attribute to `true`

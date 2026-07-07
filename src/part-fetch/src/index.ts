@@ -38,3 +38,30 @@ import "../../xpath-observer/src/index";
         }
     });
 })();
+(function() {
+    const observer = new sergiosgc.XPathObserver("//a[contains(concat(' ', @class, ' '), ' sergiosgc-inplace ')]", document);
+    observer.addEventListener("xpathobserver.node.new", function(ev: Event) {
+        const customEvent = ev as CustomEvent;
+        const anchor = customEvent.detail.target;
+        if (!anchor) return;
+        anchor.addEventListener("click", function(ev: Event) {
+            const anchor = ev.target as HTMLAnchorElement;
+            const href = anchor.getAttribute("href");
+            if (!href) return;
+            ev.preventDefault();
+            const loadInto = (url: string): Promise<void> => {
+                anchor.classList.add("loading");
+                return fetch(url, {
+                    headers: { "Accept": "text/html" },
+                }).then(response => response.text()).then(text => {
+                    const div = document.createElement("div");
+                    anchor.classList.remove("loading");
+                    div.setAttribute("class", anchor.getAttribute("class") ?? "");
+                    div.innerHTML = text;
+                    anchor.replaceWith(div);
+                });
+            };
+            loadInto(href).catch(error => console.error(error));
+        });
+    });
+})();
