@@ -8,6 +8,15 @@ import "../../mutation-event-attacher/src/index";
     const stringToIntegerArray = function(value: string) {
         return value.split(/[,]+/).filter((item) => item.trim() !== "").map(item => parseInt(item));
     }
+    const stringToJson = function(value: string) {
+        try {
+            if (value == "") return null;
+            return JSON.parse(value);
+        } catch (error) {
+            console.error("Invalid JSON value for form-enctype-json: ", value, error);
+            return null;
+        }
+    }
     const formDataToJsonType = function(form: HTMLFormElement, value: FormDataEntryValue, key: string) {
         let jsonType = "string";
         const formItem = form.elements.namedItem(key);
@@ -31,6 +40,7 @@ import "../../mutation-event-attacher/src/index";
                     case "float": return parseFloat(part as string);
                     case "string_to_string_array": return stringToStringArray(part as string);
                     case "string_to_integer_array": return stringToIntegerArray(part as string);
+                    case "json": return stringToJson(value as string);
                     default: return part as string;
                 }
             });
@@ -44,6 +54,7 @@ import "../../mutation-event-attacher/src/index";
                 case "float": return parseFloat(value as string);
                 case "string_to_string_array": return stringToStringArray(value as string);
                 case "string_to_integer_array": return stringToIntegerArray(value as string);
+                case "json": return stringToJson(value as string);
                 default: return value as string;
             }
         }

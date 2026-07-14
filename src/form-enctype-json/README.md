@@ -125,6 +125,7 @@ Note that `age` is no longer a string, but a JSON integer. Acceptable values for
 - `string_to_string_array`: Split string on TAB,CR,LF and encode as array of strings
 - `string_to_integer_array`: Split string on `,` and encode as array of integers
 - `string_nullonempty`: Encode as string but encode an empty string value as `null`
+- `json`: Interpret field string value as JSON, unserialize
 
 Any unknown encoding, as well as any field that has no `sergiosgc-enc` attribute is encoded as a string.
 
