@@ -30,6 +30,18 @@ the form submission will be intercepted, and a Javascript HTTP Fetch will be don
 }
 ```
 
+## Changing the result media type
+
+You may add an attribute `accept` to the form element, with a mime/type to be used in the `Accepts` header of the request:
+
+```
+<form id="example" method="post" enctype="application/json" action="https://example.com/" accept="text/csv">
+ <input type="text" name="first_name" value="John">
+ <input type="text" name="last_name" value="Smith">
+ <input type="text" name="age" value="42">
+</form>
+```
+
 ## Handling submission result
 
 Form submission ultimately results in a custom event of type `form-enctype-json-response`:
@@ -50,6 +62,8 @@ If the submission generates a non-HTTP error, a custom event `form-enctype-json-
 If the submission results in an HTTP error, a custom event `form-enctype-json-response-error` will be fired on the form. The event detail contains two entries: `response` and `error`, respectively the Fetch API response object and the error that was raised. This event is cancelable.
 
 If the submission results in an HTTP redirect, the browser is instructed to load the redirect location.
+
+If the submission results in a downloadable file (there's a `Content-disposition` header with an `attachment` property), the library requests the browser a download of the file contents.
 
 ## JSON structure definition
 
